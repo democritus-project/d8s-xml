@@ -6,12 +6,11 @@ from democritus_xml import (
     xml_read,
     xml_structure,
     xml_to_json,
-    _xml_iterate,
     xml_as_string,
     is_xml,
-    _is_xml_element,
     xml_text,
 )
+from democritus_xml.xml_data import _is_xml_element, _xml_iterate
 
 TEST_XML_1 = '''<note>
 <to>Tove</to>
