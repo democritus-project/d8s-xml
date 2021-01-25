@@ -1,4 +1,4 @@
-democritus-html @ git+https://github.com/democritus-project/democritus-html.git#egg=democritus-html
-democritus-strings @ git+https://github.com/democritus-project/democritus-strings.git#egg=democritus-strings
-democritus-utility @ git+https://github.com/democritus-project/democritus-utility.git#egg=democritus-utility
+democritus-html
+democritus-strings
+democritus-utility
 importlib-metadata; python_version < '3.8'
