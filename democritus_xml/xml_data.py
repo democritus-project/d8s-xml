@@ -1,7 +1,6 @@
+import functools
 from xml.etree.ElementTree import Element
 from typing import Dict, List, Optional, Union
-
-from .xml_data_temp_utils import xml_read_first_arg_string, stringify_first_arg_xml_element
 
 StringOrXmlElement = Union[str, Element]
 
@@ -25,6 +24,53 @@ def is_xml(possible_xml: str) -> bool:
         return False
     else:
         return True
+
+
+# @map_first_arg
+def xml_as_string(xml_input: Element) -> str:
+    """Convert the given xml_input to a string."""
+    import xml.etree.ElementTree as ET
+
+    from democritus_strings import bytes_decode_as_string
+
+    xml_string = ET.tostring(xml_input, method='xml')
+    # decode bytes as string - todo: make sure the line below is necessary - I don't think I should have to do this
+    xml_string = bytes_decode_as_string(xml_string)
+    return xml_string
+
+
+def xml_read_first_arg_string(func):
+    """Return an XML element for first argument (if it is a string)."""
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        first_arg = args[0]
+        other_args = args[1:]
+
+        if isinstance(first_arg, str):
+            first_arg_xml_element = xml_read(first_arg)
+            return func(first_arg_xml_element, *other_args, **kwargs)
+        else:
+            return func(*args, **kwargs)
+
+    return wrapper
+
+
+def stringify_first_arg_xml_element(func):
+    """If the first arg is an XML element, send its string representation into the function."""
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        first_arg = args[0]
+        other_args = args[1:]
+
+        if _is_xml_element(first_arg):
+            first_arg_string = xml_as_string(first_arg)
+            return func(first_arg_string, *other_args, **kwargs)
+        else:
+            return func(*args, **kwargs)
+
+    return wrapper
 
 
 def _is_xml_element(possible_element_tree: Element) -> bool:
@@ -64,19 +110,6 @@ def xml_text(xml_input: StringOrXmlElement) -> str:
     from democritus_html import html_text
 
     return html_text(xml_input)
-
-
-# @map_first_arg
-def xml_as_string(xml_input: Element) -> str:
-    """Convert the given xml_input to a string."""
-    import xml.etree.ElementTree as ET
-
-    from democritus_strings import bytes_decode_as_string
-
-    xml_string = ET.tostring(xml_input, method='xml')
-    # decode bytes as string - todo: make sure the line below is necessary - I don't think I should have to do this
-    xml_string = bytes_decode_as_string(xml_string)
-    return xml_string
 
 
 # @map_first_arg

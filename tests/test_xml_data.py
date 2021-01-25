@@ -9,10 +9,12 @@ from democritus_xml import (
     xml_as_string,
     is_xml,
     xml_text,
+    stringify_first_arg_xml_element,
+    xml_read_first_arg_string,
 )
 from democritus_xml.xml_data import _is_xml_element, _xml_iterate
 
-TEST_XML_1 = '''<note>
+TEST_XML_STRING_1 = '''<note>
 <to>Tove</to>
 <from>Jani</from>
 <heading>Reminder</heading>
@@ -23,7 +25,7 @@ TEST_XML_1 = '''<note>
 
 
 def test_xml_text_1():
-    result = xml_text(TEST_XML_1)
+    result = xml_text(TEST_XML_STRING_1)
     assert (
         result
         == '''
@@ -34,7 +36,7 @@ def test_xml_text_1():
 '''
     )
 
-    result = xml_text(xml_read(TEST_XML_1))
+    result = xml_text(xml_read(TEST_XML_STRING_1))
     assert (
         result
         == '''
@@ -47,27 +49,27 @@ def test_xml_text_1():
 
 
 def test__is_xml_element_1():
-    assert _is_xml_element(xml_read(TEST_XML_1))
+    assert _is_xml_element(xml_read(TEST_XML_STRING_1))
     assert not _is_xml_element('foo')
-    assert not _is_xml_element(TEST_XML_1)
+    assert not _is_xml_element(TEST_XML_STRING_1)
 
 
 def test_is_xml_1():
-    assert is_xml(TEST_XML_1)
+    assert is_xml(TEST_XML_STRING_1)
     assert not is_xml('foo')
 
 
 def test_xml_read_1():
-    result = xml_read(TEST_XML_1)
+    result = xml_read(TEST_XML_STRING_1)
     assert result
     assert isinstance(result, xml.etree.ElementTree.Element)
 
 
 def test_xml_structure_1():
-    result = xml_structure(TEST_XML_1)
+    result = xml_structure(TEST_XML_STRING_1)
     assert result == {"to": {}, "from": {}, "heading": {}, "body": {}}
 
-    result = xml_structure(xml_read(TEST_XML_1))
+    result = xml_structure(xml_read(TEST_XML_STRING_1))
     assert result == {"to": {}, "from": {}, "heading": {}, "body": {}}
 
 
@@ -77,7 +79,7 @@ def test_xml_structure_bad_input():
 
 
 def test_xml_to_json_1():
-    result = xml_to_json(TEST_XML_1)
+    result = xml_to_json(TEST_XML_STRING_1)
     assert result == {
         'note': [
             {
@@ -89,7 +91,7 @@ def test_xml_to_json_1():
         ]
     }
 
-    result = xml_to_json(xml_read(TEST_XML_1))
+    result = xml_to_json(xml_read(TEST_XML_STRING_1))
     assert result == {
         'note': [
             {
@@ -103,12 +105,12 @@ def test_xml_to_json_1():
 
 
 def test__xml_iterate_1():
-    result = _xml_iterate(TEST_XML_1)
+    result = _xml_iterate(TEST_XML_STRING_1)
     assert result == {'to': {}, 'from': {}, 'heading': {}, 'body': {}}
 
 
 def test_xml_as_string_1():
-    result = xml_as_string(xml_read(TEST_XML_1))
+    result = xml_as_string(xml_read(TEST_XML_STRING_1))
     assert (
         result
         == '''<note>
@@ -118,3 +120,24 @@ def test_xml_as_string_1():
 <body>Don't forget me this weekend!</body>
 </note>'''
     )
+
+
+@stringify_first_arg_xml_element
+def stringify_first_arg_xml_element_test_func_a(a):
+    """."""
+    return a
+
+
+def test_stringify_first_arg_xml_element_1():
+    xml_data = xml_read(TEST_XML_STRING_1)
+    assert stringify_first_arg_xml_element_test_func_a(xml_data) == TEST_XML_STRING_1
+
+
+@xml_read_first_arg_string
+def xml_read_first_arg_string_test_func_a(a):
+    """."""
+    return a
+
+
+def test_xml_read_first_arg_string_1():
+    assert _is_xml_element(xml_read_first_arg_string_test_func_a(TEST_XML_STRING_1))
