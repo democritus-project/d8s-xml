@@ -2,7 +2,7 @@ import xml
 
 import pytest
 
-from democritus_xml import (
+from d8s_xml import (
     xml_read,
     xml_structure,
     xml_to_json,
@@ -12,7 +12,7 @@ from democritus_xml import (
     stringify_first_arg_xml_element,
     xml_read_first_arg_string,
 )
-from democritus_xml.xml_data import _is_xml_element, _xml_iterate
+from d8s_xml.xml_data import _is_xml_element, _xml_iterate
 
 TEST_XML_STRING_1 = '''<note>
 <to>Tove</to>

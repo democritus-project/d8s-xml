@@ -1,8 +1,8 @@
 # Democritus Xml
 
-[![PyPI](https://img.shields.io/pypi/v/democritus-xml.svg)](https://pypi.python.org/pypi/democritus-xml)
-[![Build Status](https://travis-ci.com/democritus-project/democritus-xml.svg?branch=master)](https://travis-ci.com/democritus-project/democritus-xml)
-[![codecov](https://codecov.io/gh/democritus-project/democritus-xml/branch/master/graph/badge.svg?token=V0WOIXRGMM)](https://codecov.io/gh/democritus-project/democritus-xml)
+[![PyPI](https://img.shields.io/pypi/v/d8s-xml.svg)](https://pypi.python.org/pypi/d8s-xml)
+[![Build Status](https://travis-ci.com/democritus-project/d8s-xml.svg?branch=main)](https://travis-ci.com/democritus-project/d8s-xml)
+[![codecov](https://codecov.io/gh/democritus-project/d8s-xml/branch/main/graph/badge.svg?token=V0WOIXRGMM)](https://codecov.io/gh/democritus-project/d8s-xml)
 
 Democritus functions<sup>[1]</sup> for working with XML.
 
