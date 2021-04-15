@@ -14,9 +14,44 @@ Democritus functions<sup>[1]</sup> for working with XML.
 
 We use `d8s` as an abbreviation for `democritus` (you can read more about this [here](https://github.com/democritus-project/roadmap#what-is-d8s)).
 
-## Usage
+## Functions
 
-Coming soon...
+  - ```python
+    def xml_read(xml_path: str) -> Element:
+        """Read the XML from the given path (which can be a URL, file path, or string) and return an xml Element tree."""
+    ```
+  - ```python
+    def is_xml(possible_xml: str) -> bool:
+        """."""
+    ```
+  - ```python
+    def xml_as_string(xml_input: Element) -> str:
+        """Convert the given xml_input to a string."""
+    ```
+  - ```python
+    def xml_read_first_arg_string(func):
+        """Return an XML element for first argument (if it is a string)."""
+    ```
+  - ```python
+    def stringify_first_arg_xml_element(func):
+        """If the first arg is an XML element, send its string representation into the function."""
+    ```
+  - ```python
+    def xml_structure(xml_input: StringOrXmlElement) -> Dict[str, dict]:
+        """."""
+    ```
+  - ```python
+    def xml_to_json(xml_input: StringOrXmlElement) -> Dict[str, List[Dict[str, List[Dict[str, str]]]]]:
+        """Convert the xml to json using https://gitlab.com/fhightower/html-to-json."""
+    ```
+  - ```python
+    def xml_text(xml_input: StringOrXmlElement) -> str:
+        """Convert the given xml_input to a string."""
+    ```
+  - ```python
+    def xml_file_names(path: str) -> List[str]:
+        """Find all xml files in the given directory."""
+    ```
 
 ## Development
 
