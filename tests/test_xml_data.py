@@ -29,10 +29,10 @@ def test_xml_text_1():
     assert (
         result
         == '''
- Tove
- Jani
- Reminder
- Don't forget me this weekend!
+ Tove 
+ Jani 
+ Reminder 
+ Don't forget me this weekend! 
 '''
     )
 
@@ -40,10 +40,10 @@ def test_xml_text_1():
     assert (
         result
         == '''
- Tove
- Jani
- Reminder
- Don't forget me this weekend!
+ Tove 
+ Jani 
+ Reminder 
+ Don't forget me this weekend! 
 '''
     )
 
