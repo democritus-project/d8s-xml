@@ -1,6 +1,6 @@
 import functools
-from xml.etree.ElementTree import Element
 from typing import Dict, List, Optional, Union
+from xml.etree.ElementTree import Element
 
 StringOrXmlElement = Union[str, Element]
 

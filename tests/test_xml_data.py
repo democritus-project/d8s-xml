@@ -3,14 +3,14 @@ import xml
 import pytest
 
 from d8s_xml import (
-    xml_read,
-    xml_structure,
-    xml_to_json,
-    xml_as_string,
     is_xml,
-    xml_text,
     stringify_first_arg_xml_element,
+    xml_as_string,
+    xml_read,
     xml_read_first_arg_string,
+    xml_structure,
+    xml_text,
+    xml_to_json,
 )
 from d8s_xml.xml_data import _is_xml_element, _xml_iterate
 
