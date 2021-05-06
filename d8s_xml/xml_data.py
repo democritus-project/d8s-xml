@@ -1,6 +1,9 @@
 import functools
 from typing import Dict, List, Optional, Union
-from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import Element  # nosec
+
+import defusedxml.ElementTree as ET
+from d8s_html import html_text, html_to_json
 
 StringOrXmlElement = Union[str, Element]
 
@@ -8,8 +11,6 @@ StringOrXmlElement = Union[str, Element]
 # @map_first_arg
 def xml_read(xml_path: str) -> Element:
     """Read the XML from the given path (which can be a URL, file path, or string) and return an xml Element tree."""
-    import xml.etree.ElementTree as ET
-
     from d8s_utility import request_or_read
 
     xml_string = request_or_read(xml_path)
@@ -18,9 +19,10 @@ def xml_read(xml_path: str) -> Element:
 
 # @map_first_arg
 def is_xml(possible_xml: str) -> bool:
+    """Return whether or not possible_xml is valid XML."""
     try:
         xml_read(possible_xml)
-    except Exception:
+    except Exception:  # pylint:disable=W0703
         return False
     else:
         return True
@@ -29,14 +31,14 @@ def is_xml(possible_xml: str) -> bool:
 # @map_first_arg
 def xml_as_string(xml_input: Element) -> str:
     """Convert the given xml_input to a string."""
-    import xml.etree.ElementTree as ET
-
     from d8s_strings import bytes_decode_as_string
 
     xml_string = ET.tostring(xml_input, method='xml')
     # decode bytes as string - todo: make sure the line below is necessary - I don't think I should have to do this
     xml_string = bytes_decode_as_string(xml_string)
-    return xml_string
+    # mypy is failing here because: Incompatible return value type (got "bytes", expected "str")...
+    # adding a type annotation to bytes_decode_as_string should fix this
+    return xml_string  # type: ignore
 
 
 def xml_read_first_arg_string(func):
@@ -79,17 +81,23 @@ def _is_xml_element(possible_element_tree: Element) -> bool:
 
 @xml_read_first_arg_string
 def _xml_iterate(xml_input: StringOrXmlElement, structure: Optional[Dict] = None) -> Dict:
-    if structure == None:
-        structure = {}
+    new_structure: Dict
+    if structure is not None:
+        new_structure = structure
+    else:
+        new_structure = {}
 
     for child in xml_input:
-        structure[child.tag] = _xml_iterate(child, {})
-    return structure
+        # mypy fails here: Unsupported target for indexed assignment ("Optional[Dict[Any, Any]]") and...
+        # Item "str" of "Union[str, Element]" has no attribute "tag"
+        new_structure[child.tag] = _xml_iterate(child, {})  # type: ignore
+    return new_structure
 
 
 # @map_first_arg
 @xml_read_first_arg_string
 def xml_structure(xml_input: StringOrXmlElement) -> Dict[str, dict]:
+    """Return the high-level structure of xml_input."""
     result = _xml_iterate(xml_input, {})
     return result
 
@@ -98,8 +106,6 @@ def xml_structure(xml_input: StringOrXmlElement) -> Dict[str, dict]:
 @stringify_first_arg_xml_element
 def xml_to_json(xml_input: StringOrXmlElement) -> Dict[str, List[Dict[str, List[Dict[str, str]]]]]:
     """Convert the xml to json using https://gitlab.com/fhightower/html-to-json."""
-    from d8s_html import html_to_json
-
     return html_to_json(xml_input)
 
 
@@ -107,15 +113,13 @@ def xml_to_json(xml_input: StringOrXmlElement) -> Dict[str, List[Dict[str, List[
 @stringify_first_arg_xml_element
 def xml_text(xml_input: StringOrXmlElement) -> str:
     """Convert the given xml_input to a string."""
-    from d8s_html import html_text
-
     return html_text(xml_input)
 
 
 # @map_first_arg
 def xml_file_names(path: str) -> List[str]:
     """Find all xml files in the given directory."""
-    from directories import directory_file_names_matching
+    from d8s_file_system import directory_file_names_matching
 
     files = directory_file_names_matching(path, '*.xml')
     return files

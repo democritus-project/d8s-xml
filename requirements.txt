@@ -2,3 +2,5 @@ d8s-html==0.*
 d8s-strings==0.*
 d8s-utility==0.*
 importlib-metadata; python_version < '3.8'
+d8s-file-system==0.*
+defusedxml==0.7.1
