@@ -4,17 +4,16 @@ set -euxo pipefail
 
 echo "Running linters and formatters..."
 
-isort d8s_xml/ tests/
+uv run ruff check --fix d8s_xml/ tests/
+uv run ruff format d8s_xml/ tests/
 
-black d8s_xml/ tests/
+# if the CONTEXT env var is "ci" (which is set in .github/workflows/lint.yml), validate that none of the files
+# have been changed by the previous lint steps
+if [ "${CONTEXT:-local}" = "ci" ]; then
+    (git status | grep "nothing to commit") || { echo "Lint steps have changed files"; exit 1; };
+fi
 
-mypy d8s_xml/ tests/
+uv run mypy d8s_xml/ tests/
+uv run ruff check d8s_xml/ tests/
 
-pylint --fail-under 9 d8s_xml/*.py
-
-flake8 d8s_xml/ tests/
-
-bandit -r d8s_xml/
-
-# we run black again at the end to undo any odd changes made by any of the linters above
-black d8s_xml/ tests/
+echo "Done ✨ 🎉 ✨"
