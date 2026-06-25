@@ -14,12 +14,12 @@ from d8s_xml import (
 )
 from d8s_xml.xml_data import _is_xml_element, _xml_iterate
 
-TEST_XML_STRING_1 = '''<note>
+TEST_XML_STRING_1 = """<note>
 <to>Tove</to>
 <from>Jani</from>
 <heading>Reminder</heading>
 <body>Don't forget me this weekend!</body>
-</note>'''
+</note>"""
 
 # more xml examples here: https://www.w3schools.com/xml/xml_examples.asp
 
@@ -28,35 +28,35 @@ def test_xml_text_1():
     result = xml_text(TEST_XML_STRING_1)
     assert (
         result
-        == '''
+        == """
  Tove 
  Jani 
  Reminder 
  Don't forget me this weekend! 
-'''
+"""
     )
 
     result = xml_text(xml_read(TEST_XML_STRING_1))
     assert (
         result
-        == '''
+        == """
  Tove 
  Jani 
  Reminder 
  Don't forget me this weekend! 
-'''
+"""
     )
 
 
 def test__is_xml_element_1():
     assert _is_xml_element(xml_read(TEST_XML_STRING_1))
-    assert not _is_xml_element('foo')
+    assert not _is_xml_element("foo")
     assert not _is_xml_element(TEST_XML_STRING_1)
 
 
 def test_is_xml_1():
     assert is_xml(TEST_XML_STRING_1)
-    assert not is_xml('foo')
+    assert not is_xml("foo")
 
 
 def test_xml_read_1():
@@ -81,24 +81,24 @@ def test_xml_structure_bad_input():
 def test_xml_to_json_1():
     result = xml_to_json(TEST_XML_STRING_1)
     assert result == {
-        'note': [
+        "note": [
             {
-                'to': [{'_value': 'Tove'}],
-                'from': [{'_value': 'Jani'}],
-                'heading': [{'_value': 'Reminder'}],
-                'body': [{'_value': "Don't forget me this weekend!"}],
+                "to": [{"_value": "Tove"}],
+                "from": [{"_value": "Jani"}],
+                "heading": [{"_value": "Reminder"}],
+                "body": [{"_value": "Don't forget me this weekend!"}],
             }
         ]
     }
 
     result = xml_to_json(xml_read(TEST_XML_STRING_1))
     assert result == {
-        'note': [
+        "note": [
             {
-                'to': [{'_value': 'Tove'}],
-                'from': [{'_value': 'Jani'}],
-                'heading': [{'_value': 'Reminder'}],
-                'body': [{'_value': "Don't forget me this weekend!"}],
+                "to": [{"_value": "Tove"}],
+                "from": [{"_value": "Jani"}],
+                "heading": [{"_value": "Reminder"}],
+                "body": [{"_value": "Don't forget me this weekend!"}],
             }
         ]
     }
@@ -106,19 +106,19 @@ def test_xml_to_json_1():
 
 def test__xml_iterate_1():
     result = _xml_iterate(TEST_XML_STRING_1)
-    assert result == {'to': {}, 'from': {}, 'heading': {}, 'body': {}}
+    assert result == {"to": {}, "from": {}, "heading": {}, "body": {}}
 
 
 def test_xml_as_string_1():
     result = xml_as_string(xml_read(TEST_XML_STRING_1))
     assert (
         result
-        == '''<note>
+        == """<note>
 <to>Tove</to>
 <from>Jani</from>
 <heading>Reminder</heading>
 <body>Don't forget me this weekend!</body>
-</note>'''
+</note>"""
     )
 
 

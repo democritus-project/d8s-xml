@@ -33,7 +33,7 @@ def xml_as_string(xml_input: Element) -> str:
     """Convert the given xml_input to a string."""
     from d8s_strings import bytes_decode_as_string
 
-    xml_string = ET.tostring(xml_input, method='xml')
+    xml_string = ET.tostring(xml_input, method="xml")
     # decode bytes as string - todo: make sure the line below is necessary - I don't think I should have to do this
     xml_string = bytes_decode_as_string(xml_string)
     # mypy is failing here because: Incompatible return value type (got "bytes", expected "str")...
@@ -121,5 +121,5 @@ def xml_file_names(path: str) -> List[str]:
     """Find all xml files in the given directory."""
     from d8s_file_system import directory_file_names_matching
 
-    files = directory_file_names_matching(path, '*.xml')
+    files = directory_file_names_matching(path, "*.xml")
     return files
